@@ -33,6 +33,8 @@ class ContactSection extends StatelessWidget {
           const SectionTitle(
             title: 'Get in Touch',
             subtitle: 'Let’s build something amazing together ✨',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2),
           const SizedBox(height: 32),
 
@@ -91,6 +93,15 @@ class ContactSection extends StatelessWidget {
 
           const SizedBox(height: 40),
 
+          Divider(
+            thickness: 0.4,
+            color: Colors.black.withOpacity(0.1),
+            indent: 40,
+            endIndent: 40,
+            height: 1,
+          ),
+
+          const SizedBox(height: 16),
           // Footer
           Text(
             "© 2025 Kota Shamitha. All rights reserved.",
