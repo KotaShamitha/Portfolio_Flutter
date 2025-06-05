@@ -26,30 +26,32 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ScreenHelper.isMobile(context);
 
-    return Stack(
-      children: [
-        // Background image
-        Container(
-          height: 80,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/header_bg.jpeg'),
-              fit: BoxFit.cover,
-            ),
-          ),
+    return Container(
+      height: 80,
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFFEBF3FA), // Soft powder blue
+            Color(0xFFE4E4FC), // Very light lavender
+            Color(0xFFF9F9FF), // Misty white
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1), // translucent white
-            border: const Border(
-              bottom: BorderSide(color: Color(0x11000000)),
-            ),
-          ),
-          child: isMobile ? _buildMobileNav() : _buildDesktopNav(),
+        border: const Border(
+          bottom: BorderSide(color: Color(0x22000000), width: 0.5),
         ),
-      ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.shade100.withOpacity(0.25),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: isMobile ? _buildMobileNav() : _buildDesktopNav(),
     );
   }
 
@@ -128,30 +130,50 @@ class _NavButtonState extends State<_NavButton> {
   bool _hovering = false;
 
   @override
+  @override
   Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: () {
+          widget.onTap();
+          setState(() {
+            _hovering = true; // brief visual feedback on click
+          });
+          Future.delayed(const Duration(milliseconds: 200), () {
+            if (mounted) setState(() => _hovering = false);
+          });
+        },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          transform: _hovering
+              ? (Matrix4.identity()..scale(1.05))
+              : Matrix4.identity(),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: _hovering ? Colors.white.withOpacity(0.2) : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             border: _hovering
-                ? Border.all(color: Colors.white.withOpacity(0.3), width: 0.8)
+                ? Border.all(color: Colors.white.withOpacity(0.3), width: 1)
                 : null,
             boxShadow: _hovering
-                ? [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 6)]
+                ? [
+              BoxShadow(
+                color: Colors.blueAccent.withOpacity(0.2),
+                blurRadius: 10,
+                spreadRadius: 1,
+                offset: const Offset(0, 3),
+              ),
+            ]
                 : [],
           ),
           child: Text(
             widget.label,
             style: TextStyle(
               color: _hovering ? AppColors.accent : AppColors.primary,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               fontSize: 14,
             ),
           ),

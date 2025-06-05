@@ -70,21 +70,36 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              Header(onNavItemTap: scrollTo),
-              _buildSection(sectionKeys['Home']!, const HomeSection()),
-              _buildSection(sectionKeys['About']!, const AboutSection()),
-              _buildSection(sectionKeys['Skills']!, const SkillsSection()),
-              _buildSection(sectionKeys['Projects']!, const ProjectsSection()),
-              _buildSection(sectionKeys['Experience']!, const ExperienceSection()),
-              _buildSection(sectionKeys['Education']!, const EducationSection()),
-              _buildSection(sectionKeys['Certifications']!, const CertificationsSection()),
-              _buildSection(sectionKeys['Contact']!, const ContactSection()),
-            ],
-          ),
+        child: Stack(
+          children: [
+            // Scrollable content
+            Padding(
+              padding: const EdgeInsets.only(top: 80), // same as header height
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                child: Column(
+                  children: [
+                    _buildSection(sectionKeys['Home']!, const HomeSection()),
+                    _buildSection(sectionKeys['About']!, const AboutSection()),
+                    _buildSection(sectionKeys['Skills']!, const SkillsSection()),
+                    _buildSection(sectionKeys['Projects']!, const ProjectsSection()),
+                    _buildSection(sectionKeys['Experience']!, const ExperienceSection()),
+                    _buildSection(sectionKeys['Education']!, const EducationSection()),
+                    _buildSection(sectionKeys['Certifications']!, const CertificationsSection()),
+                    _buildSection(sectionKeys['Contact']!, const ContactSection()),
+                  ],
+                ),
+              ),
+            ),
+
+            // Sticky header
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Header(onNavItemTap: scrollTo),
+            ),
+          ],
         ),
       ),
     );
