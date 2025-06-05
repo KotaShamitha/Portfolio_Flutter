@@ -10,18 +10,50 @@ class ProjectsSection extends StatelessWidget {
 
   final List<ProjectData> projects = const [
     ProjectData(
-      title: 'Flutter-Firebase Chat App',
+      title: 'Talking Buddy',
       description:
-      'Real-time chat with Firebase backend, authentication, and push notifications. Responsive UI and cross-platform support.',
-      technologies: ['Flutter', 'Firebase', 'Push Notifications'],
-      link: 'https://github.com/your-repo/chat-app',
+      'Cross-platform communication app for real-time voice/video calls with secure payments using Stripe.',
+      technologies: ['Flutter', 'Agora RTC', 'Stripe'],
+      link: 'https://github.com/your-repo/portfolio',
     ),
     ProjectData(
-      title: 'Kotlin Expense Tracker',
+      title: 'KIDaccount Parent App',
       description:
-      'Track expenses with real-time charts, budget goals, and local database. Built with Jetpack Compose and Room DB.',
-      technologies: ['Kotlin', 'Jetpack Compose', 'Room DB'],
-      link: 'https://github.com/your-repo/expense-tracker',
+      'A Flutter app for secure and efficient school dismissal tracking, integrating real-time Firebase updates and modular project structure.',
+      technologies: ['Flutter', 'Firebase', 'State Management'],
+      link: 'https://github.com/KotaShamitha/KIDaccountParentApp', // replace if different
+    ),
+    ProjectData(
+      title: 'Pinestem',
+      description:
+      'Educational management mobile app built with Flutter for Android/iOS. Enables seamless scheduling, collaboration, and data syncing.',
+      technologies: ['Flutter', 'Firebase', 'Real-time Sync'],
+      link: 'https://github.com/KotaShamitha/Pinestem', // replace if different
+    ),
+    ProjectData(
+      title: 'Truth and Error App',
+      description:
+      'An interactive Flutter app fostering query-based discussions with point-based engagement. Supports category-wise posting, answering, and ranking.',
+      technologies: ['Flutter', 'Gamification', 'Cross-platform'],
+      link: 'https://github.com/KotaShamitha/TruthAndError', // replace if different
+    ),
+    ProjectData(
+      title: 'Projemanag - Trello Clone',
+      description: 'Kotlin-based task manager with Firebase backend, supporting boards, task cards, and real-time updates.',
+      technologies: ['Kotlin', 'Firebase', 'MVVM'],
+      link: 'https://github.com/your-repo/projemanag',
+    ),
+    ProjectData(
+      title: 'Drawing App for Kids',
+      description: 'Kotlin sketching app with real-time Canvas drawing, color picker, undo/redo, and save/share features.',
+      technologies: ['Kotlin', 'Canvas API', 'MediaStore'],
+      link: 'https://github.com/your-repo/drawing-app',
+    ),
+    ProjectData(
+      title: '7-Minutes Workout App',
+      description: 'Kotlin fitness app with timer-based routines, TTS guidance, and history tracking using Room DB.',
+      technologies: ['Kotlin', 'Room DB', 'RecyclerView'],
+      link: 'https://github.com/your-repo/workout-app',
     ),
     ProjectData(
       title: 'Portfolio Website',
