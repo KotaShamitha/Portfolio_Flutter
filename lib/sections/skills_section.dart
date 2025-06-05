@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../config/app_theme.dart';
@@ -26,9 +28,19 @@ class SkillsSection extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 700;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
-      color: AppColors.background,
       width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFEBF3FA), // Soft powder blue
+            Color(0xFFE4E4FC), // Very light lavender
+            Color(0xFFF9F9FF), // Misty white
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -91,22 +103,29 @@ class _SkillCardState extends State<_SkillCard> {
         child: AnimatedSlide(
           duration: const Duration(milliseconds: 200),
           offset: _hovering ? const Offset(0, -0.03) : Offset.zero,
-          child: Container(
-            width: cardWidth,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.card,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-              border: Border.all(color: Colors.black.withAlpha(13)),
-            ),
-            child: Column(
+    child: ClipRRect(
+    borderRadius: BorderRadius.circular(20),
+    child: BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+    child: Container(
+    width: cardWidth,
+    padding: const EdgeInsets.all(20),
+    decoration: BoxDecoration(
+    color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale blue with transparency
+    borderRadius: BorderRadius.circular(20),
+    border: Border.all(
+    color: const Color.fromRGBO(173, 216, 230, 0.35), // Subtle border
+    width: 1.2,
+    ),
+    boxShadow: [
+    BoxShadow(
+    color: Colors.blue.withOpacity(0.1),
+    blurRadius: 18,
+    offset: const Offset(0, 6),
+    ),
+    ],
+    ),
+    child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -140,6 +159,8 @@ class _SkillCardState extends State<_SkillCard> {
             ),
           ),
         )
+      ),
+            ),
       ),
     );
   }

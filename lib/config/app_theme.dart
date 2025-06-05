@@ -16,6 +16,8 @@ class AppColors {
   static const background = Color(0xFFF9FAFB);
   static const mutedText = Color(0xFF6B7280);
   static const cardShadow = Color(0x1A000000);
+
+  static const Color glassCard = Color.fromRGBO(255, 255, 255, 0.12);
 }
 
 class AppTextStyles {

@@ -65,10 +65,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFEDE9F6), Color(0xFFF5F0FF)], // pastel background
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+          image: DecorationImage(
+            image: AssetImage('assets/images/ic_splash_background1.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: SingleChildScrollView(

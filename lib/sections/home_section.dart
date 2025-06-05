@@ -15,13 +15,9 @@ class HomeSection extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.backgroundGradientStart,
-            AppColors.backgroundGradientEnd,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        image: DecorationImage(
+          image: AssetImage('assets/images/ic_splash_background1.jpg'),
+          fit: BoxFit.cover,
         ),
       ),
       child: Center(

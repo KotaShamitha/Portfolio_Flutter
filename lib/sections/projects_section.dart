@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../config/app_theme.dart';
@@ -33,9 +35,19 @@ class ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
       width: double.infinity,
-      color: AppColors.background,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFEBF3FA), // Soft powder blue
+            Color(0xFFE4E4FC), // Very light lavender
+            Color(0xFFF9F9FF), // Misty white
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -89,22 +101,29 @@ class _ProjectCard extends StatelessWidget {
 
     return Animate(
       effects: const [FadeEffect(), SlideEffect(begin: Offset(0, 0.1))],
-      child: Container(
-        width: cardWidth,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(10),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-          border: Border.all(color: Colors.black.withAlpha(13)),
+        child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+    child: BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+    child: Container(
+    width: cardWidth,
+    padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale blue with transparency
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: const Color.fromRGBO(173, 216, 230, 0.35), // Subtle border
+          width: 1.2,
         ),
-        child: Column(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.1), // light shadow
+            blurRadius: 18,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -151,6 +170,8 @@ class _ProjectCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
+        ),
     );
   }
 }

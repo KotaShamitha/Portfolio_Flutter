@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../config/app_theme.dart';
@@ -23,9 +25,19 @@ class CertificationsSection extends StatelessWidget {
     final isMobile = ResponsiveWidget.isMobile(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 24),
-      color: AppColors.background,
       width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFEBF3FA), // Soft powder blue
+            Color(0xFFE4E4FC), // Very light lavender
+            Color(0xFFF9F9FF), // Misty white
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -78,27 +90,36 @@ class _CertificationCardState extends State<_CertificationCard> {
         child: AnimatedSlide(
           offset: _hovering ? const Offset(0, -0.01) : Offset.zero,
           duration: const Duration(milliseconds: 200),
-          child: Container(
-            width: widget.isMobile ? double.infinity : 420,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.card,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(
+                width: widget.isMobile ? double.infinity : 420,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale blue
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: const Color.fromRGBO(173, 216, 230, 0.35),
+                    width: 1.2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.1),
+                      blurRadius: 14,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
                 ),
-              ],
-              border: Border.all(color: Colors.black.withAlpha(13)),
-            ),
-            child: Text(
-              widget.title,
-              style: AppTextStyles.body.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w500,
-                fontSize: widget.isMobile ? 14 : 16,
+                child: Text(
+                  widget.title,
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w500,
+                    fontSize: widget.isMobile ? 14 : 16,
+                  ),
+                ),
               ),
             ),
           ),

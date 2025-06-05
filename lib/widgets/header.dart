@@ -26,23 +26,30 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = ScreenHelper.isMobile(context);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white.withAlpha((0.9 * 255).round()),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white.withAlpha((0.9 * 255).round()),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+    return Stack(
+      children: [
+        // Background image
+        Container(
+          height: 80,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/header_bg.jpeg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ],
-        border: const Border(
-          bottom: BorderSide(color: Color(0x11000000)),
         ),
-      ),
-      child: isMobile ? _buildMobileNav() : _buildDesktopNav(),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1), // translucent white
+            border: const Border(
+              bottom: BorderSide(color: Color(0x11000000)),
+            ),
+          ),
+          child: isMobile ? _buildMobileNav() : _buildDesktopNav(),
+        ),
+      ],
     );
   }
 
@@ -131,8 +138,14 @@ class _NavButtonState extends State<_NavButton> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: _hovering ? AppColors.lightAccent.withAlpha(50) : Colors.transparent,
+            color: _hovering ? Colors.white.withOpacity(0.2) : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
+            border: _hovering
+                ? Border.all(color: Colors.white.withOpacity(0.3), width: 0.8)
+                : null,
+            boxShadow: _hovering
+                ? [BoxShadow(color: Colors.white.withOpacity(0.05), blurRadius: 6)]
+                : [],
           ),
           child: Text(
             widget.label,

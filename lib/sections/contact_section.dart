@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../config/app_theme.dart';
@@ -12,9 +14,19 @@ class ContactSection extends StatelessWidget {
     final isMobile = MediaQuery.of(context).size.width < 700;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
       width: double.infinity,
-      color: AppColors.background,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFFEBF3FA), // Soft powder blue
+            Color(0xFFE4E4FC), // Very light lavender
+            Color(0xFFF9F9FF), // Misty white
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -27,43 +39,52 @@ class ContactSection extends StatelessWidget {
           // 💬 Contact Card
           Animate(
             effects: const [FadeEffect(), SlideEffect(begin: Offset(0, 0.1))],
-            child: Container(
-              width: isMobile ? double.infinity : 600,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppColors.card,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(10),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-                border: Border.all(color: Colors.black.withAlpha(13)),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    "Feel free to reach out via email or connect on LinkedIn/GitHub.",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.body.copyWith(
-                      fontSize: isMobile ? 14 : 16,
-                      color: AppColors.primary,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                child: Container(
+                  width: isMobile ? double.infinity : 600,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale translucent blue
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color.fromRGBO(173, 216, 230, 0.35),
+                      width: 1.2,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.1),
+                        blurRadius: 18,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "I’m open to collaboration, internships, and freelance work.",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.body.copyWith(
-                      fontSize: isMobile ? 14 : 16,
-                      color: AppColors.mutedText,
-                    ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Feel free to reach out via email or connect on LinkedIn/GitHub.",
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.body.copyWith(
+                          fontSize: isMobile ? 14 : 16,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "I’m open to collaboration, internships, and freelance work.",
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.body.copyWith(
+                          fontSize: isMobile ? 14 : 16,
+                          color: AppColors.mutedText,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      _ContactIcons(),
+                    ],
                   ),
-                  const SizedBox(height: 24),
-                  _ContactIcons()
-                ],
+                ),
               ),
             ),
           ),
