@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../config/app_theme.dart';
 import '../widgets/section_title.dart';
-import '../widgets/responsive_widget.dart';
 
 class EducationSection extends StatelessWidget {
   const EducationSection({super.key});
@@ -68,7 +67,7 @@ class EducationSection extends StatelessWidget {
   }
 }
 
-class EducationItem extends StatelessWidget {
+class EducationItem extends StatefulWidget {
   final String institute;
   final String duration;
   final String qualification;
@@ -85,89 +84,107 @@ class EducationItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final isMobile = ResponsiveWidget.isMobile(context);
+  State<EducationItem> createState() => _EducationItemState();
+}
 
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-    child: Container(
-    padding: const EdgeInsets.all(20),
-    margin: const EdgeInsets.only(top: 12),
-    decoration: BoxDecoration(
-    color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale blue with transparency
-    borderRadius: BorderRadius.circular(20),
-    border: Border.all(
-    color: const Color.fromRGBO(173, 216, 230, 0.35),
-    width: 1.2,
-    ),
-    boxShadow: [
-    BoxShadow(
-    color: Colors.blue.withOpacity(0.1),
-    blurRadius: 18,
-    offset: const Offset(0, 6),
-    ),
-    ],
-    ),
-      child: isMobile
-          ? Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildContent(),
-      )
-          : Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _buildContent(),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Text(
-            duration,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.mutedText,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ],
-      ),
-            ),
-        ),
-    );
+class _EducationItemState extends State<EducationItem> {
+  bool _isExpanded = false;
+
+  void _toggleExpand() {
+    setState(() => _isExpanded = !_isExpanded);
   }
 
-  List<Widget> _buildContent() => [
-    Text(
-      institute,
-      style: AppTextStyles.sectionTitle.copyWith(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: AppColors.primary,
+  @override
+  Widget build(BuildContext context) {
+    // final isMobile = ResponsiveWidget.isMobile(context);
+
+    return GestureDetector(
+      onTap: _toggleExpand,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.only(top: 12),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(173, 216, 230, 0.12),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: const Color.fromRGBO(173, 216, 230, 0.35),
+                width: 1.2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blue.withOpacity(0.1),
+                  blurRadius: 18,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.institute,
+                        style: AppTextStyles.sectionTitle.copyWith(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    if (_isExpanded) ...[
+                      Text(
+                        widget.duration,
+                        style: AppTextStyles.body.copyWith(
+                          color: AppColors.mutedText,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Icon(
+                      _isExpanded ? Icons.expand_less : Icons.expand_more,
+                      color: AppColors.accent,
+                      size: 20,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  widget.qualification,
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                if (_isExpanded) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.grade,
+                    style: AppTextStyles.body.copyWith(
+                      color: AppColors.accent,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.notes,
+                    style: AppTextStyles.body.copyWith(
+                      color: AppColors.mutedText,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
       ),
-    ),
-    const SizedBox(height: 4),
-    Text(
-      qualification,
-      style: AppTextStyles.body.copyWith(
-        color: AppColors.primary,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
-    const SizedBox(height: 2),
-    Text(
-      grade,
-      style: AppTextStyles.body.copyWith(
-        color: AppColors.accent,
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    const SizedBox(height: 8),
-    Text(
-      notes,
-      style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
-    ),
-  ];
+    );
+  }
 }

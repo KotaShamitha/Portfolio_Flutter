@@ -59,13 +59,15 @@ class ProjectsSection extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               final isMobile = constraints.maxWidth < 700;
-              return Wrap(
-                spacing: 24,
-                runSpacing: 24,
-                alignment: WrapAlignment.center,
-                children: projects.map((project) {
-                  return _ProjectCard(project: project, isMobile: isMobile);
-                }).toList(),
+              return Center(
+                child: Wrap(
+                  spacing: 24,
+                  runSpacing: 24,
+                  alignment: WrapAlignment.center,
+                  children: projects.map((project) {
+                    return _ProjectCard(project: project, isMobile: isMobile);
+                  }).toList(),
+                ),
               );
             },
           ),

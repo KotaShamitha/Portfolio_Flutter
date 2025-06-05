@@ -46,17 +46,19 @@ class CertificationsSection extends StatelessWidget {
             subtitle: 'Courses and achievements that shaped my skills',
           ),
           const SizedBox(height: 24),
-          Wrap(
-            spacing: 20,
-            runSpacing: 20,
-            children: certifications
-                .map(
-                  (cert) => _CertificationCard(
-                title: cert,
-                isMobile: isMobile,
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200), // you can adjust width
+              child: Wrap(
+                spacing: 20,
+                runSpacing: 20,
+                alignment: WrapAlignment.center,
+                children: certifications.map((cert) => _CertificationCard(
+                  title: cert,
+                  isMobile: isMobile,
+                )).toList(),
               ),
-            )
-                .toList(),
+            ),
           ),
         ],
       ),
@@ -82,42 +84,55 @@ class _CertificationCardState extends State<_CertificationCard> {
 
   @override
   Widget build(BuildContext context) {
+    final cardWidth = widget.isMobile ? double.infinity : 420.0;
+    final cardHeight = 80.0;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _hovering = true),
       onExit: (_) => setState(() => _hovering = false),
       child: Animate(
         effects: const [FadeEffect(), SlideEffect(begin: Offset(0, 0.1))],
-        child: AnimatedSlide(
-          offset: _hovering ? const Offset(0, -0.01) : Offset.zero,
+        child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          child: ClipRRect(
+          width: cardWidth,
+          height: cardHeight,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(173, 216, 230, 0.12),
             borderRadius: BorderRadius.circular(20),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: Container(
-                width: widget.isMobile ? double.infinity : 420,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale blue
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: const Color.fromRGBO(173, 216, 230, 0.35),
-                    width: 1.2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.1),
-                      blurRadius: 14,
-                      offset: const Offset(0, 6),
+            border: Border.all(
+              color: const Color.fromRGBO(173, 216, 230, 0.35),
+              width: 1.2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(0.1),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Tooltip(
+                message: widget.title,
+                waitDuration: const Duration(milliseconds: 300),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 200),
+                    style: AppTextStyles.body.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w500,
+                      fontSize: widget.isMobile ? 14 : 16,
+                      overflow: _hovering ? TextOverflow.visible : TextOverflow.ellipsis,
                     ),
-                  ],
-                ),
-                child: Text(
-                  widget.title,
-                  style: AppTextStyles.body.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w500,
-                    fontSize: widget.isMobile ? 14 : 16,
+                    child: Text(
+                      widget.title,
+                      maxLines: _hovering ? 4 : 1,
+                    ),
                   ),
                 ),
               ),

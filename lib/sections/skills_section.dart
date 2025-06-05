@@ -49,18 +49,20 @@ class SkillsSection extends StatelessWidget {
             subtitle: 'Technologies I use to build amazing apps',
           ),
           const SizedBox(height: 32),
-          Wrap(
-            spacing: 24,
-            runSpacing: 24,
-            alignment: WrapAlignment.center,
-            children: skills
-                .map(
-                  (category) => _SkillCard(
-                category: category,
-                isMobile: isMobile,
-              ),
-            )
-                .toList(),
+          Center(
+            child: Wrap(
+              spacing: 24,
+              runSpacing: 24,
+              alignment: WrapAlignment.center,
+              children: skills
+                  .map(
+                    (category) => _SkillCard(
+                  category: category,
+                  isMobile: isMobile,
+                ),
+              )
+                  .toList(),
+            ),
           ),
         ],
       ),
