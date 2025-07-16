@@ -81,11 +81,13 @@ class ProjectsSection extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(
             title: 'Projects',
             subtitle: 'What I’ve built and contributed to',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ),
           const SizedBox(height: 32),
           LayoutBuilder(

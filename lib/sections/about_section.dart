@@ -25,11 +25,13 @@ class AboutSection extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(
             title: 'About Me',
             subtitle: 'Who I am and what I do',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ),
           ResponsiveWidget(
             mobile: _buildContent(isMobile: true),

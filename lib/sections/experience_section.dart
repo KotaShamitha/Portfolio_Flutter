@@ -28,11 +28,13 @@ class ExperienceSection extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(
             title: 'Experience',
             subtitle: 'Where I’ve worked and what I’ve done',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ),
           const SizedBox(height: 24),
           _buildExperienceCard(isMobile).animate().fadeIn(duration: 400.ms),

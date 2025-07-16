@@ -7,7 +7,7 @@ class AppColors {
 
   // Primary UI Colors
   static const primary = Color(0xFF1F2933); // dark slate text
-  static const accent = Color(0xFF7C3AED); // soft violet
+  static const accent = Color(0xFF927AC8); // soft violet
   static const lightAccent = Color(0xFFD8B4FE); // soft lavender chips
 
   // Surfaces

@@ -24,11 +24,13 @@ class EducationSection extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(
             title: 'Education',
             subtitle: 'Where I’ve studied and what I’ve achieved',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ),
           const SizedBox(height: 24),
           Column(
@@ -52,7 +54,7 @@ class EducationSection extends StatelessWidget {
               ),
               SizedBox(height: 20),
               EducationItem(
-                institute: 'Kennedy EM High School',
+                institute: 'Narayana Olympiad School',
                 duration: '2017 – 2018',
                 qualification: 'SSC',
                 grade: 'CGPA: 9.7',

@@ -39,11 +39,13 @@ class CertificationsSection extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(
             title: 'Certifications',
             subtitle: 'Courses and achievements that shaped my skills',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ),
           const SizedBox(height: 24),
           Center(

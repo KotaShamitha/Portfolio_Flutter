@@ -11,15 +11,15 @@ class SkillsSection extends StatelessWidget {
   final List<SkillCategory> skills = const [
     SkillCategory(
       title: 'Languages',
-      items: ['Dart', 'Kotlin', 'JavaScript', 'TypeScript'],
+      items: ['HTML', 'CSS', 'Dart', 'Kotlin', 'JavaScript', 'C', 'Java',],
     ),
     SkillCategory(
       title: 'Frameworks',
-      items: ['Flutter', 'Jetpack Compose', 'Node.js'],
+      items: ['Flutter', 'Android-Kotlin',],
     ),
     SkillCategory(
       title: 'Tools',
-      items: ['Git', 'Firebase', 'Figma', 'GitHub Actions'],
+      items: ['Git', 'GitLab', 'Firebase', 'Figma', 'Visual Studio Code', 'Android Studio', 'Postman', 'Google Collab', 'MS Word', 'MS Excel'],
     ),
   ];
 
@@ -42,11 +42,13 @@ class SkillsSection extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SectionTitle(
             title: 'Skills',
             subtitle: 'Technologies I use to build amazing apps',
+            align: TextAlign.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           ),
           const SizedBox(height: 32),
           Center(

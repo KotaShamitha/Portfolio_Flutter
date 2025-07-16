@@ -1,13 +1,65 @@
+import 'dart:convert';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:http/http.dart' as http;
+
 import '../config/app_theme.dart';
 import '../widgets/section_title.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class ContactSection extends StatelessWidget {
+class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
+
+  @override
+  State<ContactSection> createState() => _ContactSectionState();
+}
+
+class _ContactSectionState extends State<ContactSection> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+
+  bool _sending = false;
+
+  Future<void> _sendEmail() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _sending = true);
+
+    const formEndpoint = "https://formspree.io/f/mzzvbjbe"; // replace with your Formspree URL
+
+    try {
+      final response = await http.post(
+        Uri.parse(formEndpoint),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'message': _messageController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Message sent successfully!')),
+        );
+        _nameController.clear();
+        _emailController.clear();
+        _messageController.clear();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to send: ${response.body}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() => _sending = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +71,9 @@ class ContactSection extends StatelessWidget {
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFFEBF3FA), // Soft powder blue
-            Color(0xFFE4E4FC), // Very light lavender
-            Color(0xFFF9F9FF), // Misty white
+            Color(0xFFEBF3FA),
+            Color(0xFFE4E4FC),
+            Color(0xFFF9F9FF),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -37,8 +89,6 @@ class ContactSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
           ).animate().fadeIn(duration: 500.ms).slideY(begin: 0.2),
           const SizedBox(height: 32),
-
-          // 💬 Contact Card
           Animate(
             effects: const [FadeEffect(), SlideEffect(begin: Offset(0, 0.1))],
             child: ClipRRect(
@@ -46,10 +96,10 @@ class ContactSection extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: Container(
-                  width: isMobile ? double.infinity : 600,
+                  width: isMobile ? double.infinity : 500,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(173, 216, 230, 0.12), // Pale translucent blue
+                    color: const Color.fromRGBO(173, 216, 230, 0.12),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: const Color.fromRGBO(173, 216, 230, 0.35),
@@ -63,36 +113,48 @@ class ContactSection extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Feel free to reach out via email or connect on LinkedIn/GitHub.",
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.body.copyWith(
-                          fontSize: isMobile ? 14 : 16,
-                          color: AppColors.primary,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _buildTextField(_nameController, 'Name'),
+                        const SizedBox(height: 12),
+                        _buildTextField(_emailController, 'Email',
+                            keyboardType: TextInputType.emailAddress),
+                        const SizedBox(height: 12),
+                        _buildTextField(_messageController, 'Message',
+                            maxLines: 4),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: _sending ? null : _sendEmail,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accent,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: _sending
+                              ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                              : const Text('Send Message'),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        "I’m open to collaboration, internships, and freelance work.",
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.body.copyWith(
-                          fontSize: isMobile ? 14 : 16,
-                          color: AppColors.mutedText,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      _ContactIcons(),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-
           const SizedBox(height: 40),
-
           Divider(
             thickness: 0.4,
             color: Colors.black.withOpacity(0.1),
@@ -100,9 +162,7 @@ class ContactSection extends StatelessWidget {
             endIndent: 40,
             height: 1,
           ),
-
           const SizedBox(height: 16),
-          // Footer
           Text(
             "© 2025 Kota Shamitha. All rights reserved.",
             style: AppTextStyles.body.copyWith(
@@ -115,63 +175,35 @@ class ContactSection extends StatelessWidget {
       ),
     );
   }
-}
 
-// 🔗 Icon Row with hover + click effect
-class _ContactIcons extends StatelessWidget {
-  final List<_ContactItem> links = const [
-    _ContactItem(
-      icon: Icons.email,
-      tooltip: "Email",
-      url: "mailto:kotashamitha@gmail.com",
-    ),
-    _ContactItem(
-      icon: Icons.link,
-      tooltip: "LinkedIn",
-      url: "https://www.linkedin.com/in/kotashamitha/",
-    ),
-    _ContactItem(
-      icon: Icons.code,
-      tooltip: "GitHub",
-      url: "https://github.com/kotashamitha",
-    ),
-  ];
-
-  // const _ContactIcons({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 20,
-      children: links
-          .map((link) => Tooltip(
-        message: link.tooltip,
-        child: InkWell(
-          onTap: () async => await launchUrl(Uri.parse(link.url)),
-          borderRadius: BorderRadius.circular(8),
-          hoverColor: AppColors.accent.withAlpha(20),
-          splashColor: AppColors.accent.withAlpha(30),
-          child: Icon(
-            link.icon,
-            size: 28,
-            color: AppColors.accent,
-          ),
+  Widget _buildTextField(TextEditingController controller, String label,
+      {int maxLines = 1, TextInputType keyboardType = TextInputType.text}) {
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      keyboardType: keyboardType,
+      style: AppTextStyles.body,
+      validator: (value) {
+        if (value == null || value.isEmpty) return 'Please enter your $label';
+        if (label == 'Email' && !value.contains('@')) return 'Enter a valid email';
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+        filled: true,
+        fillColor: AppColors.lightAccent.withOpacity(0.05),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+          BorderSide(color: AppColors.accent.withOpacity(0.3), width: 1),
         ),
-      ))
-          .toList(),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+          BorderSide(color: AppColors.accent.withOpacity(0.7), width: 1.2),
+        ),
+      ),
     );
   }
-}
-
-class _ContactItem {
-  final IconData icon;
-  final String tooltip;
-  final String url;
-
-  const _ContactItem({
-    required this.icon,
-    required this.tooltip,
-    required this.url,
-  });
 }
